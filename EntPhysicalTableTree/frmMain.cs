@@ -14,12 +14,12 @@ namespace EntPhysicalTableTree
     public partial class frmMain : System.Windows.Forms.Form
     {
         private List<EntPhysicalTable> _list;
+
         public frmMain()
         {
             InitializeComponent();
             _list = new List<EntPhysicalTable>();
         }
-
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -73,8 +73,6 @@ namespace EntPhysicalTableTree
         {
             var msg = (e.Node.Tag as EntPhysicalTable).AllProperties;
 
-            var items = msg.Select(q => new ListViewItem(new[] { q.Key, q.Value }));
-
             dataGridView1.DataSource = msg.ToArray();
         }
 
@@ -99,6 +97,11 @@ namespace EntPhysicalTableTree
             {
                 AppendChildNodes(cnode);
             }
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }
