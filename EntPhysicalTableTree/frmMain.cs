@@ -18,11 +18,12 @@ namespace EntPhysicalTableTree
         public frmMain()
         {
             InitializeComponent();
-            _list = new List<EntPhysicalTable>();
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            _list = new List<EntPhysicalTable>();
+
             FileDialog fileDialog = new OpenFileDialog();
 
             if (fileDialog.ShowDialog() == DialogResult.OK)
@@ -35,7 +36,7 @@ namespace EntPhysicalTableTree
                 {
                     if (line.StartsWith("\"entPhysicalIndex\"")) continue;
 
-                    var arr = line.Split(',').Select(q => q.Trim('\"')).ToList();
+                    var arr = line.Split(new[] { "\",\"" }, StringSplitOptions.None).Select(q => q.Trim('\"')).ToList();
 
                     EntPhysicalTable item = new EntPhysicalTable()
                     {
@@ -89,7 +90,7 @@ namespace EntPhysicalTableTree
         {
             EntPhysicalTable table = node.Tag as EntPhysicalTable;
 
-            var nodes = _list.Where(q => q.entPhysicalContainedIn == table.entPhysicalIndex.ToString()).ToList();
+            var nodes = _list.Where(q => q.entPhysicalContainedIn == table.entPhysicalIndex.ToString() && q.entPhysicalClass!="sensor").ToList();
 
             node.Nodes.AddRange(nodes.Select(q => q.TreeNode).ToArray());
 
