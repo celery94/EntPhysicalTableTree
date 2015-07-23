@@ -38,6 +38,7 @@
             this.txtIpAddress.Name = "txtIpAddress";
             this.txtIpAddress.Size = new System.Drawing.Size(259, 20);
             this.txtIpAddress.TabIndex = 0;
+            this.txtIpAddress.Text = "192.168.1.1";
             // 
             // btnOk
             // 

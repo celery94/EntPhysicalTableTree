@@ -30,8 +30,8 @@ namespace EntPhysicalTableTree
             {
                 _list = SNMPUtil.GetEntPhysicalTable(dialog.IpAddress);
 
+                treeView.Nodes.Clear();
                 treeView.Nodes.Add(GetTreeNode());
-
                 treeView.NodeMouseClick += TreeView_NodeMouseClick;
             }
         }
