@@ -44,7 +44,7 @@ namespace EntPhysicalTableTree
             get
             {
                 return this.GetType().GetProperties().Where(q => q.Name != "TreeNode" && q.Name != "AllProperties")
-                    .ToDictionary(q => q.Name, q => q.GetValue(this, null).ToString());
+                    .ToDictionary(q => q.Name, q => q.GetValue(this, null)?.ToString());
             }
         }
     }
