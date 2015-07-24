@@ -11,7 +11,7 @@ namespace EntPhysicalTableTree
         public string entPhysicalDescr { get; set; }
         public string entPhysicalVendorType { get; set; }
         public string entPhysicalContainedIn { get; set; }
-        public string entPhysicalClass { get; set; }
+        public ClassType entPhysicalClass { get; set; }
         public string entPhysicalParentRelPos { get; set; }
         public string entPhysicalName { get; set; }
         public string entPhysicalHardwareRev { get; set; }
@@ -32,7 +32,7 @@ namespace EntPhysicalTableTree
             get
             {
                 TreeNode node = new TreeNode();
-                node.Text = string.Format("({2}){0}-{1}", entPhysicalIndex, entPhysicalDescr, entPhysicalClass);
+                node.Text = string.Format("{0}({2})----{1}", entPhysicalIndex, entPhysicalDescr, entPhysicalClass);
                 node.Tag = this;
 
                 return node;
@@ -47,5 +47,18 @@ namespace EntPhysicalTableTree
                     .ToDictionary(q => q.Name, q => q.GetValue(this, null)?.ToString());
             }
         }
+    }
+
+    public enum ClassType
+    {
+        Chassis = 3,
+        Backplane = 4,
+        Container = 5,
+        PowerSupply = 6,
+        Fan = 7,
+        Sensor = 8,
+        Module = 9,
+        Port = 10,
+        Stack = 11,
     }
 }

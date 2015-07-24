@@ -41,6 +41,7 @@ namespace EntPhysicalTableTree
             var msg = (e.Node.Tag as EntPhysicalTable).AllProperties;
 
             dataGridView1.DataSource = msg.ToArray();
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
         private TreeNode GetTreeNode()
@@ -56,7 +57,7 @@ namespace EntPhysicalTableTree
         {
             EntPhysicalTable table = node.Tag as EntPhysicalTable;
 
-            var nodes = _list.Where(q => q.entPhysicalContainedIn == table.entPhysicalIndex.ToString() && q.entPhysicalClass != "sensor").ToList();
+            var nodes = _list.Where(q => q.entPhysicalContainedIn == table.entPhysicalIndex.ToString() && q.entPhysicalClass != ClassType.Sensor).ToList();
 
             node.Nodes.AddRange(nodes.Select(q => q.TreeNode).ToArray());
 

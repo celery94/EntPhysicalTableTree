@@ -76,7 +76,7 @@ namespace EntPhysicalTableTree
                         entPhysicalDescr = rowData.ElementAtOrDefault(0),
                         entPhysicalVendorType = rowData.ElementAtOrDefault(1),
                         entPhysicalContainedIn = rowData.ElementAtOrDefault(2),
-                        entPhysicalClass = rowData.ElementAtOrDefault(3),
+                        entPhysicalClass = (ClassType)int.Parse(rowData.ElementAtOrDefault(3)),
                         entPhysicalParentRelPos = rowData.ElementAtOrDefault(4),
                         entPhysicalName = rowData.ElementAtOrDefault(5),
                         entPhysicalHardwareRev = rowData.ElementAtOrDefault(6),
