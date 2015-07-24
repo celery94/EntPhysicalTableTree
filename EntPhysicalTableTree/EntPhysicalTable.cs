@@ -10,7 +10,7 @@ namespace EntPhysicalTableTree
         public string entPhysicalDescr { get; set; }
         public string entPhysicalVendorType { get; set; }
         public string entPhysicalContainedIn { get; set; }
-        public ClassType entPhysicalClass { get; set; }
+        public string entPhysicalClass { get; set; }
         public string entPhysicalParentRelPos { get; set; }
         public string entPhysicalName { get; set; }
         public string entPhysicalHardwareRev { get; set; }
@@ -32,7 +32,7 @@ namespace EntPhysicalTableTree
             {
                 TreeNode node = new TreeNode
                 {
-                    Text = $"{entPhysicalIndex}({entPhysicalClass})--{entPhysicalName}",
+                    Text = $"{entPhysicalIndex}({(ClassType)int.Parse(entPhysicalClass)})--{entPhysicalName}",
                     Tag = this
                 };
 
@@ -48,6 +48,11 @@ namespace EntPhysicalTableTree
                     .Where(q => q.Name != "TreeNode" && q.Name != "AllProperties")
                     .ToDictionary(q => q.Name, q => q.GetValue(this, null)?.ToString());
             }
+        }
+
+        public static string OID
+        {
+            get { return "1.3.6.1.2.1.47.1.1.1"; }
         }
     }
 

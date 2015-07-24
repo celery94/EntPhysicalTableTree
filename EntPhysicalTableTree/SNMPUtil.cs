@@ -10,39 +10,35 @@ namespace EntPhysicalTableTree
 {
     public class SNMPUtil
     {
-        private static DataTable ConvertToDataTable(List<uint> tableColumns, Dictionary<string, Dictionary<uint, AsnType>> result)
+        public static List<T> GetTable<T>(string ip, string oid) where T : class, new()
         {
-            DataTable dt = new DataTable();
+            var list = GetTable(ip, oid);
 
-            foreach (uint column in tableColumns)
+            var allprop = typeof(T).GetProperties().Where(q => q.CanWrite).ToList();
+
+            List<T> retList = new List<T>();
+            foreach (var item in list)
             {
-                dt.Columns.Add(column.ToString());
-            }
-
-            foreach (KeyValuePair<string, Dictionary<uint, AsnType>> kvp in result)
-            {
-                List<string> rowData = new List<string>();
-
-                foreach (uint column in tableColumns)
+                T t = new T();
+                for (int i = 0; i < allprop.Count; i++)
                 {
-                    if (kvp.Value.ContainsKey(column))
+                    if (i == 0)
                     {
-                        rowData.Add(kvp.Value[column].ToString());
+                        allprop.ElementAt(i).SetValue(t, item.Key, null);
                     }
                     else
                     {
-                        rowData.Add("");
+                        allprop.ElementAt(i).SetValue(t, item.Value.ElementAtOrDefault(i - 1), null);
                     }
                 }
-
-                dt.Rows.Add(rowData.ToArray());
+                retList.Add(t);
             }
-            return dt;
+
+            return retList;
         }
 
-        public static List<EntPhysicalTable> GetEntPhysicalTable(string ip)
+        public static Dictionary<string, List<string>> GetTable(string ip, string oid)
         {
-            string oid = "1.3.6.1.2.1.47.1.1.1";
             List<uint> tableColumns;
 
             var result = GetTableValue(ip, oid, out tableColumns);
@@ -51,7 +47,8 @@ namespace EntPhysicalTableTree
             {
                 throw new Exception("No results returned.\n");
             }
-            List<EntPhysicalTable> list = new List<EntPhysicalTable>();
+
+            Dictionary<string, List<string>> list = new Dictionary<string, List<string>>();
             foreach (KeyValuePair<string, Dictionary<uint, AsnType>> kvp in result)
             {
                 List<string> rowData = new List<string>();
@@ -68,30 +65,7 @@ namespace EntPhysicalTableTree
                     }
                 }
 
-                EntPhysicalTable table = new EntPhysicalTable
-                {
-                    entPhysicalIndex = kvp.Key,
-                    entPhysicalDescr = rowData.ElementAtOrDefault(0),
-                    entPhysicalVendorType = rowData.ElementAtOrDefault(1),
-                    entPhysicalContainedIn = rowData.ElementAtOrDefault(2),
-                    entPhysicalClass = (ClassType)int.Parse(rowData.ElementAtOrDefault(3)),
-                    entPhysicalParentRelPos = rowData.ElementAtOrDefault(4),
-                    entPhysicalName = rowData.ElementAtOrDefault(5),
-                    entPhysicalHardwareRev = rowData.ElementAtOrDefault(6),
-                    entPhysicalFirmwareRev = rowData.ElementAtOrDefault(7),
-                    entPhysicalSoftwareRev = rowData.ElementAtOrDefault(8),
-                    entPhysicalSerialNum = rowData.ElementAtOrDefault(9),
-                    entPhysicalMfgName = rowData.ElementAtOrDefault(10),
-                    entPhysicalModelName = rowData.ElementAtOrDefault(11),
-                    entPhysicalAlias = rowData.ElementAtOrDefault(12),
-                    entPhysicalAssetID = rowData.ElementAtOrDefault(13),
-                    entPhysicalIsFRU = rowData.ElementAtOrDefault(14),
-                    entPhysicalMfgDate = rowData.ElementAtOrDefault(15),
-                    entPhysicalUris = rowData.ElementAtOrDefault(16)
-                    //IndexValue = rowData.ElementAt(18),
-                };
-
-                list.Add(table);
+                list.Add(kvp.Key, rowData);
             }
 
             return list;

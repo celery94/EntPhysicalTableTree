@@ -22,7 +22,7 @@ namespace EntPhysicalTableTree
 
             if (dialog.ShowDialog(this) == DialogResult.OK)
             {
-                _list = SNMPUtil.GetEntPhysicalTable(dialog.IpAddress);
+                _list = SNMPUtil.GetTable<EntPhysicalTable>(dialog.IpAddress, EntPhysicalTable.OID);
 
                 treeView.Nodes.Clear();
                 treeView.Nodes.Add(GetTreeNode());
@@ -51,7 +51,7 @@ namespace EntPhysicalTableTree
         {
             EntPhysicalTable item = node.Tag as EntPhysicalTable;
 
-            var nodes = _list.Where(q => q.entPhysicalContainedIn == item.entPhysicalIndex.ToString() && q.entPhysicalClass != ClassType.Sensor).ToList();
+            var nodes = _list.Where(q => q.entPhysicalContainedIn == item.entPhysicalIndex.ToString() && q.entPhysicalClass != ((int)ClassType.Sensor).ToString()).ToList();
 
             node.Nodes.AddRange(nodes.Select(q => q.TreeNode).ToArray());
 
