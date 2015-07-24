@@ -1,17 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using System.Xml;
 
 namespace EntPhysicalTableTree
 {
-    public partial class frmMain : System.Windows.Forms.Form
+    public partial class frmMain : Form
     {
         private List<EntPhysicalTable> _list;
 
@@ -40,8 +34,8 @@ namespace EntPhysicalTableTree
         {
             var msg = (e.Node.Tag as EntPhysicalTable).AllProperties;
 
-            dataGridView1.DataSource = msg.ToArray();
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvProps.DataSource = msg.ToArray();
+            dgvProps.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
         private TreeNode GetTreeNode()
@@ -55,9 +49,9 @@ namespace EntPhysicalTableTree
 
         private void AppendChildNodes(TreeNode node)
         {
-            EntPhysicalTable table = node.Tag as EntPhysicalTable;
+            EntPhysicalTable item = node.Tag as EntPhysicalTable;
 
-            var nodes = _list.Where(q => q.entPhysicalContainedIn == table.entPhysicalIndex.ToString() && q.entPhysicalClass != ClassType.Sensor).ToList();
+            var nodes = _list.Where(q => q.entPhysicalContainedIn == item.entPhysicalIndex.ToString() && q.entPhysicalClass != ClassType.Sensor).ToList();
 
             node.Nodes.AddRange(nodes.Select(q => q.TreeNode).ToArray());
 

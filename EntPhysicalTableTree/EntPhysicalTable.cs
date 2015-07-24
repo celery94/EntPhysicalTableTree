@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace EntPhysicalTableTree
@@ -31,9 +30,11 @@ namespace EntPhysicalTableTree
         {
             get
             {
-                TreeNode node = new TreeNode();
-                node.Text = string.Format("{0}({2})----{1}", entPhysicalIndex, entPhysicalDescr, entPhysicalClass);
-                node.Tag = this;
+                TreeNode node = new TreeNode
+                {
+                    Text = $"{entPhysicalIndex}({entPhysicalClass})--{entPhysicalName}",
+                    Tag = this
+                };
 
                 return node;
             }
@@ -43,7 +44,8 @@ namespace EntPhysicalTableTree
         {
             get
             {
-                return this.GetType().GetProperties().Where(q => q.Name != "TreeNode" && q.Name != "AllProperties")
+                return GetType().GetProperties()
+                    .Where(q => q.Name != "TreeNode" && q.Name != "AllProperties")
                     .ToDictionary(q => q.Name, q => q.GetValue(this, null)?.ToString());
             }
         }
@@ -59,6 +61,6 @@ namespace EntPhysicalTableTree
         Sensor = 8,
         Module = 9,
         Port = 10,
-        Stack = 11,
+        Stack = 11
     }
 }

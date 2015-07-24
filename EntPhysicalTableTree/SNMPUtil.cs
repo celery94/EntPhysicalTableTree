@@ -51,58 +51,55 @@ namespace EntPhysicalTableTree
             {
                 throw new Exception("No results returned.\n");
             }
-            else
+            List<EntPhysicalTable> list = new List<EntPhysicalTable>();
+            foreach (KeyValuePair<string, Dictionary<uint, AsnType>> kvp in result)
             {
-                List<EntPhysicalTable> list = new List<EntPhysicalTable>();
-                foreach (KeyValuePair<string, Dictionary<uint, AsnType>> kvp in result)
+                List<string> rowData = new List<string>();
+
+                foreach (uint column in tableColumns)
                 {
-                    List<string> rowData = new List<string>();
-
-                    foreach (uint column in tableColumns)
+                    if (kvp.Value.ContainsKey(column))
                     {
-                        if (kvp.Value.ContainsKey(column))
-                        {
-                            rowData.Add(kvp.Value[column].ToString());
-                        }
-                        else
-                        {
-                            rowData.Add("");
-                        }
+                        rowData.Add(kvp.Value[column].ToString());
                     }
-
-                    EntPhysicalTable table = new EntPhysicalTable()
+                    else
                     {
-                        entPhysicalIndex = kvp.Key,
-                        entPhysicalDescr = rowData.ElementAtOrDefault(0),
-                        entPhysicalVendorType = rowData.ElementAtOrDefault(1),
-                        entPhysicalContainedIn = rowData.ElementAtOrDefault(2),
-                        entPhysicalClass = (ClassType)int.Parse(rowData.ElementAtOrDefault(3)),
-                        entPhysicalParentRelPos = rowData.ElementAtOrDefault(4),
-                        entPhysicalName = rowData.ElementAtOrDefault(5),
-                        entPhysicalHardwareRev = rowData.ElementAtOrDefault(6),
-                        entPhysicalFirmwareRev = rowData.ElementAtOrDefault(7),
-                        entPhysicalSoftwareRev = rowData.ElementAtOrDefault(8),
-                        entPhysicalSerialNum = rowData.ElementAtOrDefault(9),
-                        entPhysicalMfgName = rowData.ElementAtOrDefault(10),
-                        entPhysicalModelName = rowData.ElementAtOrDefault(11),
-                        entPhysicalAlias = rowData.ElementAtOrDefault(12),
-                        entPhysicalAssetID = rowData.ElementAtOrDefault(13),
-                        entPhysicalIsFRU = rowData.ElementAtOrDefault(14),
-                        entPhysicalMfgDate = rowData.ElementAtOrDefault(15),
-                        entPhysicalUris = rowData.ElementAtOrDefault(16),
-                        //IndexValue = rowData.ElementAt(18),
-                    };
-
-                    list.Add(table);
+                        rowData.Add("");
+                    }
                 }
 
-                return list;
+                EntPhysicalTable table = new EntPhysicalTable
+                {
+                    entPhysicalIndex = kvp.Key,
+                    entPhysicalDescr = rowData.ElementAtOrDefault(0),
+                    entPhysicalVendorType = rowData.ElementAtOrDefault(1),
+                    entPhysicalContainedIn = rowData.ElementAtOrDefault(2),
+                    entPhysicalClass = (ClassType)int.Parse(rowData.ElementAtOrDefault(3)),
+                    entPhysicalParentRelPos = rowData.ElementAtOrDefault(4),
+                    entPhysicalName = rowData.ElementAtOrDefault(5),
+                    entPhysicalHardwareRev = rowData.ElementAtOrDefault(6),
+                    entPhysicalFirmwareRev = rowData.ElementAtOrDefault(7),
+                    entPhysicalSoftwareRev = rowData.ElementAtOrDefault(8),
+                    entPhysicalSerialNum = rowData.ElementAtOrDefault(9),
+                    entPhysicalMfgName = rowData.ElementAtOrDefault(10),
+                    entPhysicalModelName = rowData.ElementAtOrDefault(11),
+                    entPhysicalAlias = rowData.ElementAtOrDefault(12),
+                    entPhysicalAssetID = rowData.ElementAtOrDefault(13),
+                    entPhysicalIsFRU = rowData.ElementAtOrDefault(14),
+                    entPhysicalMfgDate = rowData.ElementAtOrDefault(15),
+                    entPhysicalUris = rowData.ElementAtOrDefault(16)
+                    //IndexValue = rowData.ElementAt(18),
+                };
+
+                list.Add(table);
             }
+
+            return list;
         }
 
         private static Dictionary<string, Dictionary<uint, AsnType>> GetTableValue(string ip, string oid, out List<uint> tableColumns)
         {
-            Dictionary<String, Dictionary<uint, AsnType>> result = new Dictionary<String, Dictionary<uint, AsnType>>();
+            Dictionary<string, Dictionary<uint, AsnType>> result = new Dictionary<string, Dictionary<uint, AsnType>>();
             // Not every row has a value for every column so keep track of all columns available in the table
             tableColumns = new List<uint>();
             // Prepare agent information
@@ -171,7 +168,7 @@ namespace EntPhysicalTableTree
                         //  string to use as key in result dictionary
                         uint[] instance = new uint[childOids.Length - 1];
                         Array.Copy(childOids, 1, instance, 0, childOids.Length - 1);
-                        String strInst = InstanceToString(instance);
+                        string strInst = InstanceToString(instance);
                         // Column id is the first value past <table oid>.entry in the response OID
                         uint column = childOids[0];
                         if (!tableColumns.Contains(column))
