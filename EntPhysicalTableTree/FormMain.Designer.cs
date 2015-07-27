@@ -1,6 +1,6 @@
 ﻿namespace EntPhysicalTableTree
 {
-    partial class frmMain
+    partial class FormMain
     {
         /// <summary>
         /// Required designer variable.

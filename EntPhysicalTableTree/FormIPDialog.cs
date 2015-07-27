@@ -9,17 +9,14 @@ using System.Windows.Forms;
 
 namespace EntPhysicalTableTree
 {
-    public partial class frmIPDialog : Form
+    public partial class FormIPDialog : Form
     {
-        public frmIPDialog()
+        public FormIPDialog()
         {
             InitializeComponent();
         }
 
-        public string IpAddress
-        {
-            get { return txtIpAddress.Text; }
-        }
+        public string IpAddress => txtIpAddress.Text;
 
         private void btnOk_Click(object sender, EventArgs e)
         {

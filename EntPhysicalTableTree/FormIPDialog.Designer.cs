@@ -1,6 +1,6 @@
 ﻿namespace EntPhysicalTableTree
 {
-    partial class frmIPDialog
+    partial class FormIPDialog
     {
         /// <summary>
         /// Required designer variable.

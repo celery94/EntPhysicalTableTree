@@ -5,11 +5,11 @@ using System.Windows.Forms;
 
 namespace EntPhysicalTableTree
 {
-    public partial class frmMain : Form
+    public partial class FormMain : Form
     {
         private List<EntPhysicalTable> _list;
 
-        public frmMain()
+        public FormMain()
         {
             InitializeComponent();
         }
@@ -18,7 +18,7 @@ namespace EntPhysicalTableTree
         {
             _list = new List<EntPhysicalTable>();
 
-            frmIPDialog dialog = new frmIPDialog();
+            FormIPDialog dialog = new FormIPDialog();
 
             if (dialog.ShowDialog(this) == DialogResult.OK)
             {
@@ -32,15 +32,15 @@ namespace EntPhysicalTableTree
 
         private void TreeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            var msg = (e.Node.Tag as EntPhysicalTable).AllProperties;
+            var msg = (e.Node.Tag as EntPhysicalTable)?.AllProperties;
 
-            dgvProps.DataSource = msg.ToArray();
+            dgvProps.DataSource = msg?.ToArray();
             dgvProps.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
         private TreeNode GetTreeNode()
         {
-            var root = _list.FirstOrDefault(q => q.entPhysicalContainedIn == "0").TreeNode;
+            var root = _list.FirstOrDefault(q => q.entPhysicalContainedIn == "0")?.TreeNode;
 
             AppendChildNodes(root);
 
@@ -51,7 +51,7 @@ namespace EntPhysicalTableTree
         {
             EntPhysicalTable item = node.Tag as EntPhysicalTable;
 
-            var nodes = _list.Where(q => q.entPhysicalContainedIn == item.entPhysicalIndex.ToString() && q.entPhysicalClass != ((int)ClassType.Sensor).ToString()).ToList();
+            var nodes = _list.Where(q => q.entPhysicalContainedIn == item?.entPhysicalIndex.ToString() && q.entPhysicalClass != ((int)ClassType.Sensor).ToString()).ToList();
 
             node.Nodes.AddRange(nodes.Select(q => q.TreeNode).ToArray());
 

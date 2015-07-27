@@ -50,10 +50,7 @@ namespace EntPhysicalTableTree
             }
         }
 
-        public static string OID
-        {
-            get { return "1.3.6.1.2.1.47.1.1.1"; }
-        }
+        public static string OID => "1.3.6.1.2.1.47.1.1.1";
     }
 
     public enum ClassType
