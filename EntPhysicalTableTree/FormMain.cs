@@ -22,7 +22,15 @@ namespace EntPhysicalTableTree
 
             if (dialog.ShowDialog(this) == DialogResult.OK)
             {
-                _list = SNMPUtil.GetTable<EntPhysicalTable>(dialog.IpAddress, EntPhysicalTable.OID);
+                try
+                {
+                    _list = SNMPUtil.GetTable<EntPhysicalTable>(dialog.IpAddress, EntPhysicalTable.OID);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    return;
+                }
 
                 treeView.Nodes.Clear();
                 treeView.Nodes.Add(GetTreeNode());
